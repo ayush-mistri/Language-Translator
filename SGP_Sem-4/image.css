@@ -1,0 +1,42 @@
+body{
+    margin: 0;
+    padding: 0; 
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+    
+  /* background image of index page */
+  .image {
+    overflow: hidden;
+    background-color: #0a0a0a;
+    background-size: cover;
+    position: absolute;
+  
+    + .image {
+        margin-top: 20px;
+    }
+  }
+  
+.bg-image{
+    overflow: hidden;
+    opacity: 0.3;
+}
+
+.container {
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.5); 
+    padding: 20px;
+    border-radius: 10px;
+}
+
+h1 {
+    color: #333;
+}
+
+p {
+    color: #555;
+}
