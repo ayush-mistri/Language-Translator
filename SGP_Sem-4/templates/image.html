@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", Lalezar, cursive, sans-serif;
+      }
+      
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        overflow: hidden;
+      }
+
+      .blur {
+          overflow: hidden;
+          background-color: #0a0a0a;
+          background-size: cover;   
+      }
+      
+      .bg-img{
+        overflow: hidden;
+        opacity: 0.3;
+      }
+      
+      .back-button a{
+        position: absolute;
+        top: 10px;
+        left: 20px;
+        font-size: 40px;
+        color: #f4f2f2;
+        opacity: 0.6;
+      }
+      
+      .back-button a:hover {
+        color: #0593c7;
+      }
+      
+      .container {
+        position: absolute;
+        bottom: 560px;
+        left: 400px;
+        max-width: 800px;
+        width: 80%;
+        padding: 20px;
+        background:rgb(187, 185, 185);
+        border-radius: 1rem;
+        z-index: 1;
+        opacity: 0.5;
+      }
+
+      .container .target{
+        position: absolute;
+        left: 420px;
+      }
+
+      .container .target-input{
+        position: absolute;
+        left: 550px;
+      }
+      
+      .extracted-text{
+        position: absolute;
+        bottom: 170px;
+        left: 200px;
+        max-width: 550px;
+        height: 350px;
+        width: 90%;
+        padding: 30px;
+        background:rgb(187, 185, 185);
+        border-radius: 1rem;
+        z-index: 1;
+        opacity: 0.5;
+      }
+
+      .output-pattern{
+        margin: 20px 0px;
+      }
+      
+      .translated-text{
+        position: absolute;
+        bottom: 170px;
+        left: 840px;
+        max-width: 550px;
+        height: 350px;
+        width: 90%;
+        padding: 30px;
+        background:rgb(187, 185, 185);
+        border-radius: 1rem;
+        z-index: 1;
+        opacity: 0.5;
+      }
+      
+      .translated-text button {
+        position: absolute;
+        top: 380px;
+        width: 300px;
+        right: 445px;
+        padding: 6px;
+        outline: none;
+        border: none;
+        cursor: pointer;
+        margin-top: 20px;
+        font-size: 1.4rem;
+        border-radius: 0.3rem;
+        color: black;
+        opacity: 0.8;
+      }
+      
+      .container button {
+        width: 100%;
+        padding: 8px;
+        outline: none;
+        border: none;
+        color: #fbf6f6;
+        cursor: pointer;
+        margin-top: 20px;
+        font-size: 1.0rem;
+        border-radius: 0.3rem;
+        background: #090909;
+        opacity: 1.5;
+      }
+      
+    </style>
+    
+  </head>
+  <body>   
+
+    <div class="blur">
+      <img class="bg-img" src="{{ url_for('static', filename='home page.jpg') }}" width="1540px">
+  
+      <div class="back-button">
+        <a href="{{ url_for('home') }}"><i class="far fa-arrow-alt-circle-left"></i></a>
+    </div>              
+
+    <form class="container"
+      id="upload-form"
+      action="/process"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <input type="file" name="image" accept="image/*" id="image-input" />
+      <label class="target" for="target_language">Target Language:</label>
+      <select class="target-input" name="target_language" id="target_language">
+        <option value="en">English</option>
+        <option value="fr">French</option>
+        <option value="es">Spanish</option>
+        <option value="bn">Bengali</option>
+        <option value="gu">Gujarati</option>
+        <option value="hi">Hindi</option>
+        <option value="de">German</option>
+        <option value="ko">Korean</option>
+        <option value="ne">Nepali</option>
+        <option value="ta">Tamil</option>
+        <option value="te">Telugu</option>
+        <option value="ru">Russian</option>
+        <!-- Add more options for other languages as needed -->
+      </select>
+      <button type="submit">Process Image</button>  
+    </form>
+    
+    <div class="extracted-text">
+      <h2>Extracted Text:</h2>
+      <div class="output-pattern">
+        <p>{{ extracted_text }}</p>
+      </div>
+    </div>
+    
+    <div class="translated-text">
+      <h2>Translated Text:</h2>
+      <div class="output-pattern">
+        <p>{{ translated_text }}</p>
+      </div>
+      <button onclick="speakTranslatedText('{{ audio_file }}')">
+        <i class="fas fa-volume-up"></i>
+      </button>
+    </div>
+    
+    <script>
+      // Function to speak translated text using Web Speech API
+      function speakTranslatedText(audio_file) {
+        var audio = new Audio("{{ url_for('static', filename='') }}" + audio_file);
+        audio.play();
+    }
+
+      // Function to display the uploaded image
+      function previewImage() {
+        var input = document.getElementById("image-input");
+        var uploadedImage = document.getElementById("uploaded-image");
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          uploadedImage.src = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+      // Call the previewImage function when a file is selected
+      document
+        .getElementById("image-input")
+        .addEventListener("change", previewImage);
+    </script>
+    
+  </body>
+</html> 
+

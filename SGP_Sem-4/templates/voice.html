@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Translation</title>
+    <!-- Link to Google Material Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!-- Link to Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", Lalezar, cursive, sans-serif;
+          }
+          
+          body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+          }
+          
+          .blur {
+              overflow: hidden;
+              background-color: #0a0a0a;
+              background-size: cover;   
+          }
+          
+          .bg-img{
+            overflow: hidden;
+            opacity: 0.3;
+          }
+        
+        .back-button a{
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 40px;
+            color: #f4f2f2;
+            opacity: 0.6;
+            z-index: 2;
+        }
+        
+        .back-button a:hover {
+            color: #0593c7;
+        }
+        
+        .container {
+            position: absolute;
+            top: 100px;
+            left: 1005px;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 600px;
+            background: rgb(187, 185, 185);
+            border-radius: 1rem;
+            padding: 20px;
+            z-index: 1;
+            opacity: 0.5;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .container .source-input,
+        .container .target-input {
+            width: 45%; /* Adjust width as needed */
+        }
+        
+        .container .source,
+        .container .target {
+            width: 100px; /* Adjust width as needed */
+            text-align: right;
+            padding-right: 10px;
+        }
+        
+        .micBtn {
+            position: absolute;
+            top: 380px;
+            width: 300px;
+            right: 900px;
+            padding: 6px;
+            outline: none;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 2rem;
+            border-radius: 0.3rem;
+            color: black;
+            opacity: 0.8;
+        }
+        
+        .extracted-text{
+            position: absolute;
+            bottom: 120px;
+            left: 620px;
+            max-width: 350px;
+            height: 400px;
+            width: 45%;
+            padding: 30px;
+            background:rgb(187, 185, 185);
+            border-radius: 1rem;
+            z-index: 1;
+            opacity: 0.5;
+          }
+
+        .translated-text{
+            position: absolute;
+            bottom: 120px;
+            right: 150px;
+            max-width: 350px;
+            height: 400px;
+            width: 45%;
+            padding: 30px;
+            background:rgb(187, 185, 185);
+            border-radius: 1rem;
+            z-index: 1;
+            opacity: 0.5;
+          }
+
+          .micBtn button {
+            position: relative;
+            bottom: 70px;
+            right: 120px;
+            border: none;
+            background-color: transparent; /* Change the background to transparent */
+            padding: 10px; /* Remove padding to fit the image size */
+            cursor: pointer;
+        }
+        
+        .micBtn button img {
+            width: 70%;
+        }
+        
+        .micBtn button img:hover {
+            opacity: 0.8; /* Optional: Add hover effect */
+        }
+        
+        .animate-pulse {
+            animation: pulseAnimation 1.5s ease-in-out;
+        }        
+        
+        #listeningText {
+            position: relative;
+            bottom: 380px;
+            right: 40px;
+            display: none;
+            color: #ffffff;
+            margin-top: 10px;
+        }
+        
+        @keyframes pulseAnimation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* Adjust the style of the .wave element */
+        .wave {
+            display: none;
+            position: absolute;
+            top: -40px;
+            left: -50px;
+            width: 160px;
+            height: 160px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            pointer-events: none;
+        }
+
+        /* Add a class to make the .wave element visible */
+        .listening .wave {
+            display: block;
+            animation: micAnimation 1s ease-out infinite; /* Apply the animation */
+        }
+
+        @keyframes micAnimation {
+            0% { transform: scale(0); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        #speakButton {
+            position: absolute;
+            top: 620px;
+            width: 300px;
+            right: 380px;
+            padding: 6px;
+            outline: none;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 1.4rem;
+            border-radius: 0.3rem;
+            color: black;
+            opacity: 0.5;
+          }
+    </style>
+</head>
+<body>
+    <div class="blur">
+        <img class="bg-img" src="{{ url_for('static', filename='home page.jpg') }}" width="1540px">
+        
+        <div class="back-button">
+            <a href="#"><i class="far fa-arrow-alt-circle-left"></i></a>
+          </div>
+        
+        <div class="container">
+            <div>
+                <label class="source" for="sourceLang">Source Language:</label>
+                <select class="source-input" id="sourceLang">
+                    <!-- Add options for source languages -->
+                    <option value="en">English</option>
+                    <option value="fr">French</option>
+                    <option value="es">Spanish</option>
+                    <option value="bn">Bengali</option>
+                    <option value="gu">Gujarati</option>
+                    <option value="hi">Hindi</option>
+                    <option value="de">German</option>
+                    <option value="ko">Korean</option>
+                    <option value="ne">Nepali</option>
+                    <option value="ta">Tamil</option>
+                    <option value="te">Telugu</option>
+                    <option value="ru">Russian</option>
+                    <!-- Add more languages as needed -->
+                </select>
+            </div>
+            
+            <div>
+                <label class="target" for="targetLang">Target Language:</label>
+                <select class="target-input" id="targetLang">
+                    <!-- Add options for target languages -->
+                    <option value="en">English</option>
+                    <option value="fr">French</option>
+                    <option value="es">Spanish</option>
+                    <option value="bn">Bengali</option>
+                    <option value="gu">Gujarati</option>
+                    <option value="hi">Hindi</option>
+                    <option value="de">German</option>
+                    <option value="ko">Korean</option>
+                    <option value="ne">Nepali</option>
+                    <option value="ta">Tamil</option>
+                    <option value="te">Telugu</option>
+                    <option value="ru">Russian</option>
+                    <!-- Add more languages as needed -->
+                </select>
+            </div>
+        </div>
+        
+        <!-- Use Google Assistant icon with animation -->
+        <div class="micBtn" id="micBtn">
+            <button onclick="startRecording()">
+                <img id="voiceImage" src="https://miro.medium.com/v2/resize:fit:720/0*cWTL65JKEdwgmSWf.png" alt="Voice Image">
+            </button>
+            <span id="listeningText">Listening...</span>
+            <div class="wave"></div>
+        </div>
+        
+        <div class="extracted-text" id="extractedText">
+            <h3>You said: </h3>
+            <br>
+            <div id="extractedContent"></div>
+        </div>
+
+        <div class="translated-text" id="translatedText">
+            <h3>Translated Text: </h3>
+            <br>
+            <div id="translatedContent"></div>
+        </div>
+    </div>
+
+    <button id="speakButton" onclick="speakTranslatedText()"><i class="fas fa-volume-up"></i></button>
+
+    <script>
+        function startRecording() {
+            var voiceImage = document.getElementById("voiceImage");
+
+            // Check if the listening text is shown on the webpage
+            var listeningText = document.getElementById("listeningText");
+            var listeningTextStyle = window.getComputedStyle(listeningText);
+            var isListening = listeningTextStyle.getPropertyValue("display") !== "none";
+
+            // If the listening text is not shown, apply the animation
+            if (!isListening) {
+                voiceImage.classList.add("animate-pulse");
+                setTimeout(function() {
+                    voiceImage.classList.remove("animate-pulse");
+                }, 500); // 0.5s animation duration
+            }
+
+            var extractedContent = document.getElementById("extractedContent");
+            // Check if the extracted content is not empty
+            if (extractedContent.innerHTML.trim() !== "") {
+                // If extracted content is not empty, hide the listening text
+                document.getElementById("listeningText").style.display = "none";
+            } else {
+                // If extracted content is empty, show the listening text
+                document.getElementById("listeningText").style.display = "inline";
+            }
+            
+            var recognition = new webkitSpeechRecognition();
+            recognition.lang = 'en-US';
+            recognition.start();
+        
+            recognition.onresult = function(event) {
+                var result = event.results[0][0].transcript;
+                extractedContent.innerHTML = "<p>" + result + "</p>";
+                // Translate the extracted text
+                translateText(result);
+                // Hide the listening text after setting the extracted content
+                document.getElementById("listeningText").style.display = "none";
+            };
+            
+            setTimeout(function() {
+                document.getElementById("micBtn").classList.add("listening");
+            }, 100);
+
+            var extractedText = document.getElementById("extractedText");
+            var isTextShown = extractedText.style.display === "none";
+            var micBtn = document.getElementById("micBtn");
+
+            if (isTextShown) {
+                micBtn.classList.toggle("listening");
+            }
+        }                       
+
+        function translateText(text) {
+            var sourceLang = document.getElementById("sourceLang").value;
+            var targetLang = document.getElementById("targetLang").value;
+        
+            fetch('/translate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({text: text, source_lang: sourceLang, target_lang: targetLang})
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("translatedContent").innerHTML = "<p>" + data.translated_text + "</p>";
+                // Enable the speak button and set translated text
+                document.getElementById("speakButton").style.display = "block";
+                document.getElementById("speakButton").setAttribute("translated_text", data.translated_text);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }        
+
+        function speakTranslatedText() {
+            var translatedText = document.getElementById("speakButton").getAttribute("translated_text");
+            var lang = document.getElementById("targetLang").value;
+            speakText(translatedText, lang);
+        }        
+
+        function speakText(text, lang) {
+            var audio = new Audio('/speak?text=' + encodeURIComponent(text) + '&lang=' + lang);
+            audio.play();
+        }
+    </script>
+</body>
+</html>

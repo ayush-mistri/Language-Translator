@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/fon  t-awesome.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+    <title>Language Translator</title>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+      *{
+        margin: 0;
+        padding: 0; 
+      }
+
+      body {
+        overflow-y: hidden;
+        overflow-x: hidden; 
+      }
+
+
+      /* background image of index page */
+      .blur {
+        overflow: hidden;
+        background-color: #0a0a0a;
+        background-size: cover;
+        position: absolute;
+
+        + .blur {
+          margin-top: 20px;
+        }
+      }
+
+      .bg-img{
+        overflow: hidden;
+        opacity: 0.3;
+      }
+      /* End background image of index page */
+
+
+      /* overlay word*/
+      .overlay {
+        color: rgb(219, 216, 216);
+        display: flex;
+        font-size: 20px;
+        height: 100%;
+        padding: 250px 80px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50%;
+        z-index: 1;
+
+        .alt & {
+          left: 0;
+          right: auto;
+        }
+        
+        h2 {
+          font-size: 80px;
+          margin: 0;
+        }
+      }
+      .first{
+        color: #0593c7;
+      }
+      h2 {
+        font-family: "Montserrat Medium";
+        max-width: 40ch;
+        text-align: center;
+        transform: scale(0.94);
+        animation: scale 3s forwards cubic-bezier(0.5, 1, 0.89, 1);
+        }
+        @keyframes scale {
+        100% {
+          transform: scale(1);
+        }
+        }
+        
+        span {
+        display: inline-block;
+        opacity: 0;
+        filter: blur(4px);
+        }
+        
+        span:nth-child(1) {
+        animation: fade-in 0.8s 0.4s forwards cubic-bezier(0.11, 0, 0.5, 0);
+        }
+        
+        span:nth-child(2) {
+        animation: fade-in 0.8s 0.8s forwards cubic-bezier(0.11, 0, 0.5, 0);
+        }
+        
+        span:nth-child(3) {
+        animation: fade-in 0.8s 1.2s forwards cubic-bezier(0.11, 0, 0.5, 0);
+        }
+        
+        span:nth-child(4) {
+        animation: fade-in 0.8s 1.6s forwards cubic-bezier(0.11, 0, 0.5, 0);
+        }
+        
+        span:nth-child(5) {
+        animation: fade-in 0.8s 2.0s forwards cubic-bezier(0.11, 0, 0.5, 0);
+        }
+        
+        span:nth-child(6) {
+        animation: fade-in 0.8s 2.4s forwards cubic-bezier(0.11, 0, 0.5, 0);
+        }
+        
+        @keyframes fade-in {
+        100% {
+          opacity: 1;
+          filter: blur(0);
+        }
+        }
+      /* End overlay word*/
+
+
+      /* style the logo*/
+      .logo{
+        left: 10px;
+        margin: 10px;
+        position: absolute;
+        height: 60px;
+      }
+
+      .heading{
+        left: 100px;
+        top: 10px;
+        font-size: 2pc;
+        color: #f6f7f8;
+        margin: 10px;
+        position: absolute;
+        height: 60px;
+      }
+      /*End of style logo*/
+
+
+      /* Style the navigation bar */
+      .navbar {
+        overflow-y: hidden;
+        position: absolute;
+        height: 50px;
+        width: 100%;
+        background-color:transparent;
+        overflow: auto;
+        color: #faf9f9;
+      }
+
+      .navbar a {
+        margin: 2px;
+        padding: 5px;
+        font-size: 22px;
+        position: relative;
+        top: 9px;
+        left: 1400px;
+        float: left;
+        text-align: center;
+        color: rgb(253, 249, 249);
+        text-decoration: none;
+        z-index: 2;
+      }
+
+      .navbar a:hover {
+        color: #0593c7;
+      }
+
+      /* .active {
+          background-color: rgb(71, 72, 72);
+      }  */
+
+      /* .option{
+        position: relative;
+        top: 100px;
+        background-color: #f6f7f8;
+        font-size: 5pc;
+        color: #0593c7;
+      }
+
+      .option{
+        top: 625px;
+        left: 500px;
+        background: transparent;
+      }
+      .voice{
+        top: 10px;
+        height: 100px;
+        left: 100px;
+        z-index: 1;
+      } */
+
+      .main_box{
+        position: relative;
+        left: 1120px;
+        background-size: cover;
+        height: 100vh;
+        width: 100%;
+        z-index: 1;
+      }
+      .main_box .sidebar_menu{
+        position: relative;
+        top: 80px;
+        height: 70vh;
+        width: 410px;
+        right: -500px;
+        opacity: 0.5;
+        background-color: #f6f7f8;
+        box-shadow: 0px 0px 6px rgba(252, 251, 251, 0.5);
+        overflow: hidden;
+        transition: all 0.4s linear;
+      }
+      .sidebar_menu .logo{
+        position: absolute;
+        width: 92%;
+        height: 70px;
+        box-shadow: 0.1px 2px 4px rgba(6, 6, 6, 0.5);
+      }
+      .sidebar_menu .logo a{
+        color: #050505;
+        font-size: 28px;
+        font-weight: 500;
+        position: absolute;
+        top: 7px;
+        left: 100px;
+        line-height: 60px;
+        text-decoration: none;
+        
+      }
+      .sidebar_menu .menu{
+        position: absolute;
+        top: 120px;
+        width: 100%;
+      }
+      .sidebar_menu .menu li{
+        margin-top: 10px;
+        padding: 25px 15px;
+      }
+      .sidebar_menu .menu i{
+        color: #090909;
+        font-size: 22px;
+        padding-right: 8px;
+      }
+      .sidebar_menu .menu a{
+        color: #080808;
+        font-size: 22px;
+        text-decoration: none;
+      }
+      .sidebar_menu .menu li:hover{
+        border-left: 3px solid #111111;
+        box-shadow: 0px 0.2px 10px rgba(10, 10, 10, 0.5);
+      }
+      .sidebar_menu .social_media{
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 20px;
+        list-style: none;
+        cursor: pointer;
+      }
+      .sidebar_menu .social_media i{
+        text-decoration: none;
+        padding: 3px 10px;
+        color: #030303;
+        opacity: 0.6;
+        font-size: 21px;
+      }
+      .sidebar_menu .social_media i:hover{
+        opacity: 1;
+        transition: all 0.2s linear;
+        transform: scale(1.01);
+      }
+      #check{
+        display: none;
+      }
+      .main_box .btn_one i{
+        color: #f7f5f5;
+        font-size: 40px;
+        font-weight: 700;
+        position: relative;
+        top: 320px;
+        left: 370px;
+        line-height: 60px;
+        cursor: pointer;
+        opacity: 1;
+        transition: all 0.3s;  
+        z-index: 1;
+      }
+      .sidebar_menu .btn_two i{
+        font-size: 25px;
+        line-height: 60px;
+        position: absolute;
+        left: 370px;
+        cursor: pointer;
+        opacity: 0;
+        transition: all 0.3s linear;
+      }
+      .btn_one i:hover{
+        font-size: 29px;
+        color: #0593c7;
+      }
+      .btn_two i:hover{
+        font-size: 24px;
+      }
+      #check:checked ~ .sidebar_menu{
+        right: 0;
+      }
+      #check:checked ~ .btn_one i{
+        opacity: 0;
+      }
+      #check:checked ~ .sidebar_menu .btn_two i{
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="blur">
+      <img class="bg-img" src="{{ url_for('static', filename='home page.jpg') }}" width="1540px">
+
+      <div class="overlay">
+        <div class="flex">
+          <h2>
+            <span>Language</span>
+            <span>Solution</span>
+            <span class="first">For</span> 
+            <span>A</span>
+            <span>Connected</span>
+            <span>World</span>
+          </h2>
+        </div>
+      </div>
+    </div>
+
+    <img class="logo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiKz1zhYhzt6Z_vDPdn-aS8DE8yziDAiek1w&usqp=CAU" alt="">
+
+    <div class="heading">
+      <p>Language Translator</p>
+    </div>
+
+    <div class="navbar">
+      <a class="active" href="home.html"><i class="fa fa-fw fa-home"></i> Home</a>
+    </div>
+    
+  <div class="main_box">
+    <input type="checkbox" id="check">
+    <div class="btn_one">
+      <label for="check">
+        <i class="fas fa-angle-double-left"></i>
+      </label>
+    </div>
+    <div class="sidebar_menu">
+      <div class="logo">
+        <a href="#">TRANSLATOR</a>
+          </div>
+        <div class="btn_two">
+          <label for="check">
+            <i class="fas fa-times"></i>
+          </label>
+        </div>
+      <div class="menu">
+        <ul>
+          <li>
+            <i class="	fas fa-edit"></i>
+            <a href="http://127.0.0.1:5001">Text</a>
+          </li>
+          <li>
+            <i class="fas fa-microphone"></i>
+            <a href="http://127.0.0.1:5003">Voice</a>
+        </li>
+        <li>
+            <i class="fas fa-images"></i>
+            <a href="http://127.0.0.1:5002">Image</a>
+        </li>
+
+          <!-- <li>
+            <i class="fas fa-calendar-week"></i>
+            <a href="#">Events</a>
+          </li> -->
+          
+        </ul>
+      </div>
+      <div class="social_media">
+        <ul>
+          <a href="https://github.com/ayush-mistri"><i class="fab fa-github"></i></a>
+          <a href="https://www.linkedin.com/feed/?trk=homepage-basic_sign-in-submit"><i class="fab fa-linkedin"></i></a>
+          <a href="https://www.instagram.com/"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.youtube.com/channel/UCm697qDzbjbWvnrRpd4SeEw"><i class="fab fa-youtube"></i></a>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+    </div>
+
+  </body>
+</html>
